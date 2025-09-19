@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .env
+
+# TinaMCP server (separate repository)
+TinaMCP/

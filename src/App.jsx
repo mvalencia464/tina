@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './App.css';
 
@@ -8,25 +8,20 @@ function App() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Simulate reading posts from your TinaCMS project
-  // In a real app, you'd fetch this from an API or build process
+  // Sample posts data - in production this would come from TinaCloud
   const samplePosts = [
     {
-      id: 'sample-post',
-      title: 'Sample Blog Post',
-      date: '2025-09-19',
-      author: 'Test Author',
-      content: `# Sample Blog Post
+      id: 'hello-world',
+      title: 'Hello, World!',
+      date: '2025-09-19T10:00:00.000Z',
+      author: 'TinaCMS Team',
+      tags: ['Getting Started', 'TinaCMS'],
+      featured: false,
+      content: `## Hello World!
 
-This is a sample blog post for testing TinaMCP.
+Your first TinaCMS post content goes here.
 
-## Features
-
-- Markdown support
-- Frontmatter parsing  
-- React rendering
-
-This content would normally come from your TinaCMS files.`
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non lorem diam. Quisque vulputate nibh sodales eros pretium tincidunt. Aenean porttitor efficitur convallis.`
     },
     {
       id: 'tinamcp-power',
@@ -46,74 +41,52 @@ Most local businesses struggle with content management because:
 - **Technical Complexity**: Traditional CMSs require ongoing technical maintenance
 - **Cost Constraints**: Enterprise solutions are too expensive for small operations
 - **Time Limitations**: Business owners need to focus on operations, not wrestling with technology
-- **Flexibility Needs**: Content requirements change as businesses evolve
+- **Flexibility Needs**: Content requirements change as businesses evolve`
+    },
+    {
+      id: 'stoke-leads-announcement',
+      title: 'Stoke Leads Unveils Revolutionary Content Management Platform: Where Simplicity Meets AI-Powered Innovation',
+      date: '2025-09-19T18:00:00.000Z',
+      author: 'Stoke Leads Team',
+      tags: ['Stoke Leads', 'Content Management', 'AI Integration', 'MCP', 'Innovation'],
+      featured: true,
+      content: `# Stoke Leads Unveils Revolutionary Content Management Platform: Where Simplicity Meets AI-Powered Innovation
 
-## How TinaMCP Addresses These Issues
+Today marks a pivotal moment in the evolution of content management systems. **Stoke Leads** is proud to announce the launch of our groundbreaking platform that fundamentally reimagines how businesses create, manage, and scale their digital content.
 
-### Git-Based Simplicity
-TinaMCP leverages TinaCMS's Git-based approach, meaning your content lives in simple files that can be version-controlled and backed up easily. No database complexity or server maintenance headaches.
+## Beyond Traditional CMS: A New Paradigm
 
-### Programmatic Access
-Through the Model Context Protocol, business processes can be automated:
-- Bulk content updates
-- Automated report generation
-- Integration with business systems
-- Scheduled content publishing
+While the market has been saturated with complex, bloated content management systems that require extensive technical expertise, Stoke Leads has taken a radically different approach. Our platform combines the elegance of simplicity with the power of cutting-edge AI integration, delivering something the industry has never seen before.
 
-### Developer-Friendly, Business-Ready
-While TinaMCP provides powerful developer tools, the underlying content remains accessible as simple Markdown files that anyone can read and edit.
+### What Makes Stoke Leads Different?
 
-## Practical Applications for Local Businesses
+**🎯 Unparalleled User Experience**
+Our interface is so intuitive that your team will be productive from day one. No lengthy training sessions, no complex workflows – just pure, efficient content creation.
 
-### Restaurant Chains
-- Update menus across multiple locations simultaneously
-- Manage seasonal promotions programmatically
-- Integrate with POS systems for real-time pricing
+**🚀 Superior Performance**
+Built from the ground up with modern architecture, our platform outperforms traditional high-level sites in both speed and reliability. Your content loads faster, your users stay engaged longer.
 
-### Service Businesses
-- Automate service area updates
-- Generate location-specific landing pages
-- Sync staff directories across multiple sites
+**🔄 Effortless Updates**
+Gone are the days of wrestling with complicated update processes. Our streamlined system makes content updates as simple as editing a document.
 
-### Retail Operations
-- Bulk product catalog updates
-- Inventory-driven content changes
-- Automated sale notifications
+**🤖 AI-Powered Through MCP Integration**
+Here's where we truly differentiate ourselves: **Model Context Protocol (MCP) integration**. This isn't just another AI feature – it's a fundamental shift in how content management systems can interact with artificial intelligence.
 
-## Getting Started: A Realistic Approach
+## See It in Action
 
-The beauty of TinaMCP lies in its progressive adoption:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5zxZ69tyuwc?si=cMy5RcW3htNb_rkG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-1. **Start Simple**: Begin with basic content in Markdown files
-2. **Add Structure**: Implement TinaCMS schemas as needs grow
-3. **Automate Gradually**: Use TinaMCP tools for repetitive tasks
-4. **Scale Naturally**: Expand automation as business requirements evolve
+*Watch our platform in action and see why businesses are making the switch to Stoke Leads.*
 
-## The Economic Case
+## Ready to Transform Your Content Strategy?
 
-For local businesses, TinaMCP offers:
-- **Lower Total Cost**: No expensive CMS licensing or hosting requirements
-- **Reduced Maintenance**: Git-based content is inherently stable
-- **Future-Proof Investment**: Standard formats ensure long-term accessibility
-- **Scalable Growth**: Start small, expand capabilities as needed
+The future of content management is here, and it's more accessible than ever. Whether you're a small business looking to streamline operations or an enterprise seeking to scale content production, Stoke Leads provides the tools and intelligence you need to succeed.
 
-## Real-World Implementation
-
-A typical local business implementation might involve:
-- Simple file-based content structure
-- Automated backup to GitHub
-- MCP-driven bulk updates for common changes
-- Integration with existing business workflows
-
-## Conclusion
-
-TinaMCP represents a paradigm shift for local business content management. By combining the simplicity of file-based content with the power of programmatic access, it offers a sustainable path forward for businesses that need professional web presence without enterprise complexity.
-
-The future of local business content management isn't about choosing between simple and powerful – it's about having both when you need them.
+**Ready to see what's possible?** Contact Stoke Leads today and discover why forward-thinking businesses are choosing our platform over traditional alternatives.
 
 ---
 
-*This post demonstrates TinaMCP in action – it was created using the very tools it describes, showcasing the practical power of programmatic content management.*`
+*Stoke Leads: Where content management meets artificial intelligence. Where complexity becomes simplicity. Where your vision becomes reality.*`
     }
   ];
 
