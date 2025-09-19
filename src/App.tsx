@@ -1,30 +1,41 @@
-// src/App.jsx
+// src/App.tsx
 import { useState, useEffect } from 'react';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import { client } from '../.tina/__generated__/client';
 import './App.css';
 
-function App() {
-  const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [loading, setLoading] = useState(true);
+// Define our simplified post interface for the UI
+interface PostData {
+  id: string;
+  title: string;
+  date: string;
+  author: string;
+  tags: string[];
+  featured: boolean;
+  content: any; // TinaCMS rich-text content
+}
+
+function App(): React.JSX.Element {
+  const [posts, setPosts] = useState<PostData[]>([]);
+  const [selectedPost, setSelectedPost] = useState<PostData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // Load posts from TinaCMS
-    const loadPosts = async () => {
+    const loadPosts = async (): Promise<void> => {
       try {
         const postsResponse = await client.queries.postConnection();
-        const postsData = postsResponse.data.postConnection.edges.map(edge => ({
-          id: edge.node._sys.filename,
-          title: edge.node.title,
-          date: edge.node.date,
-          author: edge.node.author,
-          tags: edge.node.tags || [],
-          featured: edge.node.featured || false,
-          content: edge.node.body
-        }));
+        const postsData: PostData[] = postsResponse.data.postConnection.edges?.map(edge => ({
+          id: edge?.node?._sys.filename || '',
+          title: edge?.node?.title || '',
+          date: edge?.node?.date || '',
+          author: edge?.node?.author || '',
+          tags: edge?.node?.tags?.filter((tag): tag is string => tag !== null) || [],
+          featured: edge?.node?.featured || false,
+          content: edge?.node?.body
+        })).filter((post): post is PostData => post.id !== '') || [];
 
-        setPosts(postsData.sort((a, b) => new Date(b.date) - new Date(a.date)));
+        setPosts(postsData.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
         setLoading(false);
       } catch (error) {
         console.error('Error loading posts:', error);
@@ -54,9 +65,9 @@ function App() {
         <aside className="sidebar">
           <h2>Posts</h2>
           <ul className="post-list">
-            {posts.map(post => (
+            {posts.map((post: PostData) => (
               <li key={post.id} className={selectedPost?.id === post.id ? 'active' : ''}>
-                <button 
+                <button
                   onClick={() => setSelectedPost(post)}
                   className="post-button"
                 >
@@ -82,9 +93,9 @@ function App() {
                   <span>{new Date(selectedPost.date).toLocaleDateString()}</span>
                   {selectedPost.featured && <span className="featured">⭐ Featured</span>}
                 </div>
-                {selectedPost.tags && (
+                {selectedPost.tags && selectedPost.tags.length > 0 && (
                   <div className="tags">
-                    {selectedPost.tags.map(tag => (
+                    {selectedPost.tags.map((tag: string) => (
                       <span key={tag} className="tag">{tag}</span>
                     ))}
                   </div>
@@ -108,7 +119,7 @@ function App() {
                   <span>Posts</span>
                 </div>
                 <div className="stat">
-                  <strong>{posts.filter(p => p.featured).length}</strong>
+                  <strong>{posts.filter((p: PostData) => p.featured).length}</strong>
                   <span>Featured</span>
                 </div>
               </div>
