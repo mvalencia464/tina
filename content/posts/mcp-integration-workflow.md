@@ -23,6 +23,10 @@ Our testing process involves several key steps:
 3. **Deployment**: Pushing changes to Netlify for production testing
 4. **Integration Testing**: Verifying the MCP integration works end-to-end
 
+```
+<iframe width="560" height="315" src="https://www.youtube.com/embed/a-N_jhohQX0?si=lU1mdgofwkQrOAHk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+```
+
 ## Key Features Being Tested
 
 * **Rich-text Content Rendering**: Ensuring TinaCMS content displays properly using the `TinaMarkdown` component
