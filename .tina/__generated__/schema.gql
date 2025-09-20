@@ -119,10 +119,25 @@ input BooleanFilter {
   exists: Boolean
 }
 
-input RichTextFilter {
-  startsWith: String
-  eq: String
+input NumberFilter {
+  lt: Float
+  lte: Float
+  gte: Float
+  gt: Float
+  eq: Float
   exists: Boolean
+  in: [Float]
+}
+
+input PostBodyIframeFilter {
+  src: StringFilter
+  title: StringFilter
+  width: NumberFilter
+  height: NumberFilter
+}
+
+input PostBodyFilter {
+  iframe: PostBodyIframeFilter
 }
 
 input PostFilter {
@@ -131,7 +146,7 @@ input PostFilter {
   author: StringFilter
   tags: StringFilter
   featured: BooleanFilter
-  body: RichTextFilter
+  body: PostBodyFilter
 }
 
 type PostConnectionEdges {

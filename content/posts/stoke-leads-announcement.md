@@ -1,7 +1,5 @@
 ---
-title: >-
-  Mauricio's CMS – Stoke Leads Unveils Revolutionary Content Management
-  Platform: Where Simplicity Meets AI-Powered Innovation
+title: Mauricio's CMS – Stoke Leads
 date: 2025-09-19T18:00:00.000Z
 author: Stoke Leads Team
 tags:

@@ -15,6 +15,91 @@ interface PostData {
   content: any; // TinaCMS rich-text content
 }
 
+// Allowed domains for iframe embeds (security allowlist)
+const ALLOWED_DOMAINS = [
+  'youtube.com',
+  'youtu.be',
+  'www.youtube.com',
+  'api.leadconnectorhq.com',
+  'maps.google.com',
+  'www.google.com',
+  'google.com',
+  'vimeo.com',
+  'player.vimeo.com',
+  'calendly.com',
+  'typeform.com'
+];
+
+// Secure iframe component with domain validation
+interface IframeProps {
+  src: string;
+  title?: string;
+  width?: number;
+  height?: number;
+}
+
+const SecureIframe: React.FC<IframeProps> = ({
+  src,
+  title = "Embedded content",
+  width = 560,
+  height = 315
+}) => {
+  try {
+    const url = new URL(src);
+    const isAllowed = ALLOWED_DOMAINS.some(domain =>
+      url.hostname === domain || url.hostname.endsWith('.' + domain)
+    );
+
+    if (!isAllowed) {
+      return (
+        <div style={{
+          padding: '20px',
+          border: '2px dashed #ccc',
+          borderRadius: '8px',
+          textAlign: 'center',
+          color: '#666'
+        }}>
+          <p>🚫 Embed not allowed from domain: {url.hostname}</p>
+          <p>Allowed domains: {ALLOWED_DOMAINS.join(', ')}</p>
+        </div>
+      );
+    }
+
+    return (
+      <div style={{ margin: '20px 0' }}>
+        <iframe
+          src={src}
+          title={title}
+          width={width}
+          height={height}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+          style={{
+            maxWidth: '100%',
+            border: 'none',
+            borderRadius: '8px'
+          }}
+        />
+      </div>
+    );
+  } catch (error) {
+    return (
+      <div style={{
+        padding: '20px',
+        border: '2px dashed #ff6b6b',
+        borderRadius: '8px',
+        textAlign: 'center',
+        color: '#d63031'
+      }}>
+        <p>❌ Invalid URL: {src}</p>
+        <p>Please provide a valid embed URL</p>
+      </div>
+    );
+  }
+};
+
 function App(): React.JSX.Element {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [selectedPost, setSelectedPost] = useState<PostData | null>(null);
@@ -103,7 +188,12 @@ function App(): React.JSX.Element {
               </header>
               <div className="post-content">
                 {selectedPost.content ? (
-                  <TinaMarkdown content={selectedPost.content} />
+                  <TinaMarkdown
+                    content={selectedPost.content}
+                    components={{
+                      iframe: SecureIframe
+                    }}
+                  />
                 ) : (
                   <p>No content available</p>
                 )}

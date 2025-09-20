@@ -66,6 +66,39 @@ export default defineConfig({
             name: "body",
             label: "Body",
             isBody: true,
+            templates: [
+              {
+                name: "iframe",
+                label: "Embed (YouTube, GHL, Maps, etc.)",
+                fields: [
+                  {
+                    type: "string",
+                    name: "src",
+                    label: "Embed URL",
+                    required: true,
+                    description: "Full URL of the embed (e.g., YouTube embed URL, GHL calendar URL, etc.)"
+                  },
+                  {
+                    type: "string",
+                    name: "title",
+                    label: "Title",
+                    description: "Descriptive title for accessibility"
+                  },
+                  {
+                    type: "number",
+                    name: "width",
+                    label: "Width",
+                    description: "Width in pixels (default: 560)"
+                  },
+                  {
+                    type: "number",
+                    name: "height",
+                    label: "Height",
+                    description: "Height in pixels (default: 315)"
+                  }
+                ]
+              }
+            ]
           },
         ],
       },

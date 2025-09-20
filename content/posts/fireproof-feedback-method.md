@@ -1,7 +1,7 @@
 ---
 title: >-
-  The Fireproof Feedback Method: How One Simple Question Transforms Customer
-  Reviews (And Why Review Gating Is Killing Your Reputation)
+  The Fireproof Feedback Method: (And Why Review Gating Is Killing Your
+  Reputation)
 date: 2025-09-19T20:00:00.000Z
 author: Stoke Leads Team
 tags:

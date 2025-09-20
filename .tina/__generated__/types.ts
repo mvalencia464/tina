@@ -198,10 +198,25 @@ export type BooleanFilter = {
   exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type RichTextFilter = {
-  startsWith?: InputMaybe<Scalars['String']['input']>;
-  eq?: InputMaybe<Scalars['String']['input']>;
+export type NumberFilter = {
+  lt?: InputMaybe<Scalars['Float']['input']>;
+  lte?: InputMaybe<Scalars['Float']['input']>;
+  gte?: InputMaybe<Scalars['Float']['input']>;
+  gt?: InputMaybe<Scalars['Float']['input']>;
+  eq?: InputMaybe<Scalars['Float']['input']>;
   exists?: InputMaybe<Scalars['Boolean']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
+};
+
+export type PostBodyIframeFilter = {
+  src?: InputMaybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
+  width?: InputMaybe<NumberFilter>;
+  height?: InputMaybe<NumberFilter>;
+};
+
+export type PostBodyFilter = {
+  iframe?: InputMaybe<PostBodyIframeFilter>;
 };
 
 export type PostFilter = {
@@ -210,7 +225,7 @@ export type PostFilter = {
   author?: InputMaybe<StringFilter>;
   tags?: InputMaybe<StringFilter>;
   featured?: InputMaybe<BooleanFilter>;
-  body?: InputMaybe<RichTextFilter>;
+  body?: InputMaybe<PostBodyFilter>;
 };
 
 export type PostConnectionEdges = {
@@ -445,7 +460,7 @@ export const ExperimentalGetTinaClient = () =>
   getSdk(
     generateRequester(
       createClient({
-        url: "http://localhost:4001/graphql",
+        url: "https://content.tinajs.io/1.6/content/fc89988f-34b9-494e-93f2-86be575c9f1b/github/main",
         queries,
       })
     )
