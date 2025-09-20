@@ -1,5 +1,5 @@
 // src/App.tsx
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
@@ -16,6 +16,79 @@ interface PostData {
   featured: boolean;
   content: any; // TinaCMS rich-text content
 }
+
+// Custom component to render markdown content with HTML support
+const ContentRenderer = ({ content }: { content: any }) => {
+  // If content is a string (markdown), parse and render with HTML support
+  if (typeof content === 'string') {
+    // Split content by lines and process each line
+    const lines = content.split('\n');
+    const processedLines: (string | JSX.Element)[] = [];
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Check if line contains iframe
+      if (line.includes('<iframe')) {
+        // Find the complete iframe tag (might span multiple lines)
+        let iframeHtml = line;
+        let j = i + 1;
+
+        // Continue reading lines until we find the closing tag
+        while (j < lines.length && !iframeHtml.includes('</iframe>')) {
+          iframeHtml += '\n' + lines[j];
+          j++;
+        }
+
+        // Render the iframe directly
+        processedLines.push(
+          <div
+            key={`iframe-${i}`}
+            dangerouslySetInnerHTML={{ __html: iframeHtml }}
+            style={{ margin: '2rem 0' }}
+          />
+        );
+
+        // Skip the lines we've already processed
+        i = j - 1;
+      } else {
+        // Regular markdown line
+        processedLines.push(line);
+      }
+    }
+
+    // Join non-iframe lines back into markdown and render with ReactMarkdown
+    const markdownContent = processedLines
+      .filter(line => typeof line === 'string')
+      .join('\n');
+
+    const iframeElements = processedLines.filter(line => typeof line !== 'string');
+
+    return (
+      <div>
+        <ReactMarkdown
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            iframe: (props: any) => <iframe {...props} style={{ maxWidth: '100%' }} />
+          }}
+        >
+          {markdownContent}
+        </ReactMarkdown>
+        {iframeElements}
+      </div>
+    );
+  }
+
+  // For TinaCMS rich-text content, use TinaMarkdown
+  return (
+    <TinaMarkdown
+      content={content}
+      components={{
+        iframe: SecureIframe
+      }}
+    />
+  );
+};
 
 // Allowed domains for iframe embeds (security allowlist)
 const ALLOWED_DOMAINS = [
@@ -190,25 +263,7 @@ function App(): React.JSX.Element {
               </header>
               <div className="post-content">
                 {selectedPost.content ? (
-                  // Check if content is a string (markdown) or object (TinaCMS rich-text)
-                  typeof selectedPost.content === 'string' ? (
-                    <ReactMarkdown
-                      rehypePlugins={[rehypeRaw]}
-                      components={{
-                        // Allow iframes to be rendered safely
-                        iframe: (props: any) => <iframe {...props} style={{ maxWidth: '100%' }} />
-                      }}
-                    >
-                      {selectedPost.content}
-                    </ReactMarkdown>
-                  ) : (
-                    <TinaMarkdown
-                      content={selectedPost.content}
-                      components={{
-                        iframe: SecureIframe
-                      }}
-                    />
-                  )
+                  <ContentRenderer content={selectedPost.content} />
                 ) : (
                   <p>No content available</p>
                 )}
