@@ -1,5 +1,5 @@
 ---
-title: 'Testing MCP Integration: From Local Development to Production'
+title: "Testing MCP Integration: From Local Development to Production \U0001F525"
 date: 2025-01-19T00:00:00.000Z
 author: TinaCMS Team
 tags:
