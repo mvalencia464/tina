@@ -15,6 +15,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",
     "tinacms": "^2.8.3"

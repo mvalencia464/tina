@@ -1,6 +1,8 @@
 // src/App.tsx
 import { useState, useEffect } from 'react';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import { client } from '../.tina/__generated__/client';
 import './App.css';
 
@@ -188,12 +190,25 @@ function App(): React.JSX.Element {
               </header>
               <div className="post-content">
                 {selectedPost.content ? (
-                  <TinaMarkdown
-                    content={selectedPost.content}
-                    components={{
-                      iframe: SecureIframe
-                    }}
-                  />
+                  // Check if content is a string (markdown) or object (TinaCMS rich-text)
+                  typeof selectedPost.content === 'string' ? (
+                    <ReactMarkdown
+                      rehypePlugins={[rehypeRaw]}
+                      components={{
+                        // Allow iframes to be rendered safely
+                        iframe: (props: any) => <iframe {...props} style={{ maxWidth: '100%' }} />
+                      }}
+                    >
+                      {selectedPost.content}
+                    </ReactMarkdown>
+                  ) : (
+                    <TinaMarkdown
+                      content={selectedPost.content}
+                      components={{
+                        iframe: SecureIframe
+                      }}
+                    />
+                  )
                 ) : (
                   <p>No content available</p>
                 )}
